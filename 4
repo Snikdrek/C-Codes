@@ -1,0 +1,54 @@
+#include <iostream>
+#include <queue>
+#include <set>
+using namespace std;
+
+long long countReachableCells(long long N, long long M, long long X0, long long Y0, long long L) {
+    queue<pair<long long, long long>> q;
+    set<pair<long long, long long>> visited;
+
+    q.push({X0, Y0});
+    visited.insert({X0, Y0});
+
+    while (!q.empty()) {
+        pair<long long, long long> current = q.front();
+        q.pop();
+        long long x = current.first;
+        long long y = current.second;
+
+        // Check all four possible directions
+        if (x - L >= 1 && visited.find({x - L, y}) == visited.end()) {
+            q.push({x - L, y});
+            visited.insert({x - L, y});
+        }
+        if (x + L <= N && visited.find({x + L, y}) == visited.end()) {
+            q.push({x + L, y});
+            visited.insert({x + L, y});
+        }
+        if (y - L >= 1 && visited.find({x, y - L}) == visited.end()) {
+            q.push({x, y - L});
+            visited.insert({x, y - L});
+        }
+        if (y + L <= M && visited.find({x, y + L}) == visited.end()) {
+            q.push({x, y + L});
+            visited.insert({x, y + L});
+        }
+    }
+
+    return visited.size();
+}
+
+int main() {
+    int T;
+    cin >> T;
+
+    for (int t = 0; t < T; ++t) {
+        long long N, M, X0, Y0, L;
+        cin >> N >> M >> X0 >> Y0 >> L;
+
+        long long result = countReachableCells(N, M, X0, Y0, L);
+        cout << result << endl;
+    }
+
+    return 0;
+}
